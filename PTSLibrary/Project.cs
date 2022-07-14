@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTSLibrary
 {
-    class Project
+   public class Project
     {
         private string name;
         private DateTime expectedStartDate;

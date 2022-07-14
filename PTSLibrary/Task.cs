@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTSLibrary
 {
-    class Task
+   public class Task
     {
         private Guid taskId;
         private string name;

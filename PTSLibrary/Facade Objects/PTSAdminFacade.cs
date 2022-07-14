@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTSLibrary.Facade_Objects
 {
-    class PTSAdminFacade : PTSSuperFacade
+   public class PTSAdminFacade : PTSSuperFacade
     {
         private DAO.AdminDAO dao;
         public PTSAdminFacade() : base(new DAO.AdminDAO())

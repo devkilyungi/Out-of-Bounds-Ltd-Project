@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTSLibrary
 {
-    class Customer : User
+   public class Customer : User
     {
         public Customer(string name, int id)
         {

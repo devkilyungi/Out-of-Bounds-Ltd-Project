@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTSLibrary.Facade_Objects
 {
-	class PTSClientFacade : PTSSuperFacade
+	public class PTSClientFacade : PTSSuperFacade
 	{
 		private DAO.ClientDAO dao;
 
