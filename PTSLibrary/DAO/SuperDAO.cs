@@ -17,11 +17,9 @@ namespace PTSLibrary.DAO
             SqlCommand cmd;
             SqlDataReader dr;
             Customer cust;
-
-            sql = "SELECT * FROM customer WHERE CustomerId = " + custId;
-            cn = new SqlConnection("Server=localhost;Database=wm75;User Id=root;Password=abcd1234;");
+            sql = "SELECT * FROM Customer WHERE CustomerId = " + custId;
+            cn = new SqlConnection(Properties.Settings.Default.ConnectionString);
             cmd = new SqlCommand(sql, cn);
-
             try
             {
                 cn.Open();
@@ -40,7 +38,6 @@ namespace PTSLibrary.DAO
             }
             return cust;
         }
-
         public List<Task> GetListOfTasks(Guid projectId)
         {
             string sql;
@@ -49,30 +46,28 @@ namespace PTSLibrary.DAO
             SqlDataReader dr;
             List<Task> tasks;
             tasks = new List<Task>();
-
-            sql = "SELECT * FROM task WHERE CustomerId = " + custId;
-            cn = new SqlConnection("Server=localhost;Database=wm75;User Id=root;Password=abcd1234;");
+            sql = "SELECT * FROM Task WHERE ProjectId = '" + projectId + "'";
+            cn = new SqlConnection(Properties.Settings.Default.ConnectionString);
             cmd = new SqlCommand(sql, cn);
-
             try
             {
                 cn.Open();
                 dr = cmd.ExecuteReader();
                 while (dr.Read())
                 {
-                    Task t = new Task((Guid)dr["TaskId"], dr["Name"].ToString(), (Status)((int)dr["StatusId"]));
+                    Task t = new Task((Guid)dr["TaskId"], dr["Name"].ToString(),
+                   (Status)((int)dr["StatusId"]));
                     tasks.Add(t);
                 }
                 dr.Close();
             }
             catch (SqlException ex)
             {
-                throw new Exception("Error getting tasks list", ex);
+                throw new Exception("Error getting taks list", ex);
             }
             finally
             {
                 cn.Close();
-
             }
             return tasks;
         }

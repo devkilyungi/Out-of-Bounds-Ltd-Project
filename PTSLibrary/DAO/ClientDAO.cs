@@ -8,26 +8,27 @@ using System.Data;
 
 namespace PTSLibrary.DAO
 {
-    class ClientDAO
+    class ClientDAO : SuperDAO
     {
-        public int Authenticate(string username, string password)
+        public TeamLeader Authenticate(string username, string password)
         {
             string sql;
             SqlConnection cn;
             SqlCommand cmd;
             SqlDataReader dr;
-
-            sql = string.Format("SELECT DISTINCT Person.Name, UserId,TeamId FROM Person INNER JOIN Team ON (Team.TeamLeaderId=Person.UserId) WHERE  Username= '{0}' AND Password= '{1}'", username, password);
-            cn = new SqlConnection(Properties.Settings.ConnectionString);
+            TeamLeader leader = null;
+            sql = String.Format("SELECT DISTINCT Person.Name, UserId, TeamId FROM Person INNER JOIN Team ON(Team.TeamLeaderId = Person.UserId) WHERE Username = '{0}' AND Password = '{1}'", username, password);
+           
+            cn = new SqlConnection(Properties.Settings.Default.ConnectionString);
             cmd = new SqlCommand(sql, cn);
-            int id = 0;
             try
             {
                 cn.Open();
                 dr = cmd.ExecuteReader(CommandBehavior.SingleRow);
                 if (dr.Read())
                 {
-                    id = (int)dr["CustomerId"];
+                    leader = new TeamLeader(dr["Name"].ToString(), (int)dr["TeamId"],
+                   (int)dr["TeamId"]);
                 }
                 dr.Close();
             }
@@ -39,63 +40,41 @@ namespace PTSLibrary.DAO
             {
                 cn.Close();
             }
-            return id;
-
+            return leader;
         }
-
         public List<Project> GetListOfProjects(int teamId)
         {
-            cn.Open();
-            dr = cmd.ExecuteReader();
-            while (dr.Read())
+            string sql;
+            SqlConnection cn;
+            SqlCommand cmd;
+            SqlDataReader dr;
+            List<Project> projects;
+            projects = new List<Project>();
+            sql = "SELECT P.* FROM Project AS P INNER JOIN Task AS T ON (P.ProjectId = T.ProjectId) WHERE T.TeamId = " + teamId;
+        cn = new SqlConnection(Properties.Settings.Default.ConnectionString);
+            cmd = new SqlCommand(sql, cn);
+            try
             {
-                List<Task> tasks = new List<Task>();
-                sql = "SELECT" FROM Tank WHERE ProjectId = ' "   + dr["Project Id"].ToString() + " ' ";
-          cn2 = new SqlConnection(Properties.Settings.Default.ConnectionString);
-                cmd2 = new SqlCommand(sql, cn2);
-
-                cn2.Open();
-
-                dr2 = cmd2.ExecuteReader();
-
-                while (dr2.Read())
-
+                cn.Open();
+                dr = cmd.ExecuteReader();
+                while (dr.Read())
                 {
-
-                    Task t = new Task((Guid)dr2["TaskId"), dr2["Name"].ToString(), (Status)dr2["StatusId"]);
-
-                    tasks.Add(t);
+                    Customer cust = GetCustomer((int)dr["CustomerId"]);
+                    Project p = new Project(dr["Name"].ToString(), (DateTime)dr["ExpectedStartDate"],
+                   (DateTime)dr["ExpectedEndDate"], (Guid)dr["ProjectId"], cust);
+                    projects.Add(p);
                 }
-                dr2.Close();
-
-                Project p = new Project(dr["Name").ToString(), (DateTime)dr["ExpectedStartDate"), (DateTime)dr["ExpectedEndDate"), (Guid)dr["Project Id"], tasks);
-
-                projects.Add(p);
+                dr.Close();
             }
-            dr.Close();
+            catch (SqlException ex)
+            {
+                throw new Exception("Error Getting list", ex);
+            }
+            finally
+            {
+                cn.Close();
+            }
+            return projects;
         }
-catch (SqlException ex)
-{
-    throw new Exception("Error Getting list", ex);
-    }
-finally
-{
-    cn.Close();
-}
-
-
-
-
-
-
-
-
-)
-
-
-
-    }
-}
-
     }
 }
