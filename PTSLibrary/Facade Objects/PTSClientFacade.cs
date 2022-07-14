@@ -12,7 +12,7 @@ namespace PTSLibrary.Facade_Objects
 
 		public PTSClientFacade() : base(new DAO.ClientDAO())
 		{
-			dao = (dao.ClientDAO)base.dao;
+			dao = (DAO.ClientDAO)base.dao;
 		}
 
 		public TeamLeader Authenticate(string username, string password)
@@ -26,7 +26,7 @@ namespace PTSLibrary.Facade_Objects
 
 		public Project[] GetListOfProjects(int teamId)
 		{
-			return (dao.GetListOfProjects(teamId)).ToArray;
+			return (dao.GetListOfProjects(teamId)).ToArray();
 		}
 
 	}
