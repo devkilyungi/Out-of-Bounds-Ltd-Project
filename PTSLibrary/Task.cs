@@ -24,6 +24,10 @@ namespace PTSLibrary
             set { name = value; }
         }
 
+        public String NameAndStatus
+        {
+            get { return name +"-" + status; }
+        }
         public Status theStatus
         {
             get { return status; }
