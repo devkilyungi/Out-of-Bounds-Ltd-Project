@@ -36,6 +36,7 @@ namespace PTSLibrary.Facade_Objects
         public Project[] GetListOfProjects(int adminId)
         {
             return (dao.GetListOfProjects(adminId)).ToArray();
+           
         }
         public Team[] GetListOfTeams()
         {

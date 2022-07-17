@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTSLibrary
 {
-	public class PTSSuperFacade
+	public class PTSSuperFacade : MarshalByRefObject
 	{
 		protected DAO.SuperDAO dao;
 

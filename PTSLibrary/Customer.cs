@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace PTSLibrary
 {
+    [Serializable]
    public class Customer : User
     {
         public Customer(string name, int id)
